@@ -5,9 +5,9 @@ import misc.Process;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FIFO extends Algorithm {
+public class FCFS extends Algorithm {
 
-    public FIFO(ArrayList<Process> data) {
+    public FCFS(ArrayList<Process> data) {
         super(data);
     }
 

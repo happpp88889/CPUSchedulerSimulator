@@ -1,4 +1,4 @@
 package algorithms;
 
-public class RoundRobin {
+public class RoundRobin extends Algorithm{
 }
