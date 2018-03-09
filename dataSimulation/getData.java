@@ -1,38 +1,40 @@
 package dataSimulation;
 
+
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Random;
+import misc.Process;
 
 public class getData {
 
-    private ArrayList<Double[]> data;
+    private ArrayList<Process> data;
     private double MAX_EXECUTE_TIME=10;
     private double MAX_TIME = 1;
 
     public getData() {
-        data = new ArrayList<>();
+        data = new ArrayList<Process>();
     }
 
     /** Generates random data for CPU scheduling task
      * INPUT: number of processes
      */
     public void createData(int n) {
-        Random generator = new Random();
 
-        double executeTime, arrivalTime;
-        Double row[];
+        Random generator = new Random();
+        int executeTime;
+        int arrivalTime;
+        Process proces;
         double delta = MAX_TIME/(double)n;
+
         for (int i=0; i<n; i++) {
 
-            arrivalTime = i*delta + generator.nextDouble() * delta;
-            executeTime = generator.nextDouble()*10;
+            arrivalTime = (int)(i*delta + generator.nextDouble() * delta);
+            executeTime = (int)generator.nextDouble()*10;
 
-            row = new Double[2];
-            row[0] = arrivalTime;
-            row[1] = executeTime;
+            proces = new Process(arrivalTime, executeTime);
 
-            data.add(row);
+            data.add(proces);
         }
     }
 
@@ -42,9 +44,11 @@ public class getData {
      */
     public void saveData(String name) {
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(name))) {
+
             String input;
-            for (Double[] i: data) {
-                input = i[0] + " " + i[1] + "\n";
+
+            for (Process i: data) {
+                input = i.getArrivalTime() + " " + i.getDuration() + "\n";
                 bw.write(input);
             }
 
@@ -58,14 +62,16 @@ public class getData {
 
             String input;
             String cols[];
-            Double row[];
+            Process proces;
+            int arrivalTime;
+            int duration;
+
             while ((input = br.readLine()) != null) {
                 cols = input.split(" ");
-                row = new Double[2];
-                row[0] = Double.parseDouble(cols[0]);
-                row[1] = Double.parseDouble(cols[1]);
-
-                data.add(row);
+                arrivalTime = Integer.parseInt(cols[0]);
+                duration = Integer.parseInt(cols[1]);
+                proces = new Process(arrivalTime, duration);
+                data.add(proces);
             }
 
         } catch (IOException ex) {
@@ -73,7 +79,7 @@ public class getData {
         }
     }
 
-    public ArrayList<Double[]> getData() {
+    public ArrayList<Process> getData() {
         return data;
     }
 }
